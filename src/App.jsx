@@ -1,11 +1,11 @@
-import './App.css'
-
+import "./App.css";
+import Loading from "./Components/Loading";
 function App() {
   return (
-    <div className='font-sans text-4xl bg-yellow-200'>
-      Test tailwind, Roboto font
+    <div className="">
+      <Loading />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
