@@ -1,5 +1,5 @@
 import React from "react";
-import Ambulancia from "../assets/Ambulancia.png";
+import Ambulancia from "../assets//IconsImages/Ambulancia.png";
 
 const Evento = () => {
   return (
