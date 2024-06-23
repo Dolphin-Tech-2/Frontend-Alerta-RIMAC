@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import Notification from "./Notification";
 
-const ContainerNotification = () => {
-  const [notification, setNotification] = useState("");
-  const [date, setDate] = useState(new Date());
+const ContainerNotification = ({flag, setFlag}) => {
+  const [title, setTitle] = useState("Alerta RIMAC");
+  const [description, setDescription] = useState("");
+  const [date, setDate] = useState("");
   const [statusNotification, setStatusNotification] = useState(false);
 
   useEffect(() => {
@@ -12,8 +13,13 @@ const ContainerNotification = () => {
 
     socket.on("notification", (data) => {
       setStatusNotification(true);
-      setNotification(data?.message?.gemini_output);
-      setDate(new Date(data.date));
+      setFlag(!flag);
+      setTitle(data?.evento?.tipo);
+      setDescription(data?.evento?.gemini_output);
+
+      const diferenciaMilisegundos = new Date() - new Date(data.fecha);
+      const diferenciaMinutos = diferenciaMilisegundos / (1000 * 60);
+      setDate(diferenciaMinutos.toString());
       console.log(data);
 
       // Establecer un temporizador para ocultar la notificación después de 3 segundos
@@ -34,9 +40,9 @@ const ContainerNotification = () => {
         statusNotification
           ? "translate-y-0 opacity-100"
           : "-translate-y-full opacity-0"
-      } transition-all duration-500 absolute`}
+      } transition-all duration-500 absolute z-50`}
     >
-      <Notification description={notification} />
+      <Notification description={description} title={title} time={date} />
     </div>
   );
 };
