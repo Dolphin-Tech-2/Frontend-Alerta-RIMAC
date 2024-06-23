@@ -6,12 +6,13 @@ import {
   createBrowserRouter,
   useLoaderData,
 } from "react-router-dom";
-import Notification from "./Components/Notification";
+import { getById, getByStatus } from "./api/peticiones.api";
 import { useEffect, useState } from "react";
 import Detalles from "./Components/Detalles";
 import MapEvents from "./Components/MapEvents";
 import Loading from "./Components/Loading";
 import { useNavigate } from "react-router-dom";
+import ContainerNotification from "./Components/ContainerNotification";
 
 const router = createBrowserRouter([
   {
@@ -30,7 +31,23 @@ const router = createBrowserRouter([
 ]);
 
 export default function App() {
-  return <RouterProvider router={router} />;
+  const [flag, setFlag] = useState(false);
+  const [eventos, setEventos] = useState([]);
+  useEffect(() => {
+    console.log("flag", flag);
+    const fetchData = async () => {
+      const result = await getById(1);
+      setEventos(result);
+      console.log(result);
+    };
+    fetchData();
+  }, [flag]);
+  return (
+    <div>
+      <ContainerNotification flag={flag} setFlag={setFlag} />
+      <RouterProvider router={router} />;
+    </div>
+  );
 }
 
 function Root() {
