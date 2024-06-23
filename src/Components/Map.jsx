@@ -4,7 +4,7 @@ import "../App.css";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker, Popup, Circle } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
-import { Icon, divIcon, point } from "leaflet";
+import { Icon, divIcon, marker, point } from "leaflet";
 import ambulanceIcon from "../assets/IconsImages/Ambulancia.png";
 import AccidenteVehicularIcon from "../assets/IconsImages/AccidenteVehicular.png";
 import IncendioIcon from "../assets/IconsImages/Incendio.png";
@@ -12,6 +12,7 @@ import RescateIcon from "../assets/IconsImages/Rescate.png";
 import EventosEspeciales from "../assets/IconsImages/EventosEspeciales.png";
 import MaterialesPeligrosos from "../assets/IconsImages/MaterialesPeligrosos.png";
 import Sismo from "../assets/IconsImages/Sismo.png";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const customAbulanciaIcon = new Icon({
   iconUrl: ambulanceIcon,
@@ -47,16 +48,19 @@ let markers = [
     geocode: [-12.092918, -77.025284],
     popUp: "Hello, I am pop up 1 <br />",
     type: customRescateIcon,
+    id: 1,
   },
   {
     geocode: [-12.0946, -77.027698],
     popUp: "Hello, I am pop up 2",
     type: customMaterialesPeligrososIcon,
+    id: 2,
   },
   {
     geocode: [-12.095042, -77.024384],
     popUp: "Hello, I am pop up 3",
     type: customSismoIcon,
+    id: 3,
   },
 ];
 const createClusterCustomIcon = function (cluster) {
@@ -67,8 +71,10 @@ const createClusterCustomIcon = function (cluster) {
   });
 };
 
-const Map = ({ latitud, longitud }) => {
+const Map = ({ latitud, longitud, eventosMapa }) => {
   const position = [latitud, longitud];
+  const navigate = useNavigate();
+
   return (
     <div className="flex h-4/6 w-screen self-center items-center mb-8">
       <MapContainer center={position} zoom={17} scrollWheelZoom={false}>
@@ -85,18 +91,21 @@ const Map = ({ latitud, longitud }) => {
           chunkedLoading
           iconCreateFunction={createClusterCustomIcon}
         >
-          {markers.map((marker) => (
-            <Marker
-              position={marker.geocode}
-              icon={marker.type}
-              key={marker.geocode}
-            >
-              <Popup>
-                {marker.popUp}
-                <a href="www.google.com">Click me</a>
-              </Popup>
-            </Marker>
-          ))}
+          {/*{ lat: marker.latitud, lng: marker.longitud } */}
+          {eventosMapa &&
+            markers.map((marker) => (
+              <Marker
+                position={{ lat: marker.latitud, lng: marker.longitud }}
+                icon={marker.type}
+                key={marker.latitud + marker.longitud}
+              >
+                <NavLink to={`/Informe/${marker.id}`}>
+                  <Popup>
+                    <a href="">Ver más</a>
+                  </Popup>
+                </NavLink>
+              </Marker>
+            ))}
         </MarkerClusterGroup>
       </MapContainer>
     </div>

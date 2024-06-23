@@ -10,35 +10,43 @@ import Notification from "./Components/Notification";
 import { useEffect, useState } from "react";
 import Detalles from "./Components/Detalles";
 import MapEvents from "./Components/MapEvents";
+import Loading from "./Components/Loading";
+import { useNavigate } from "react-router-dom";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "",
     element: <Root />,
-    children: [
-      {
-        path: "Eventos",
-        element: <MapaLoc />,
-      },
-      {
-        path: "Informe/:eventName",
-        element: <InfDetalles />,
-        async loader({ params }) {
-          let name = params.eventName;
-          return name;
-        },
-      },
-    ],
+  },
+  { path: "/Eventos", element: <MapaLoc /> },
+  {
+    path: "/Informe/:eventName",
+    element: <InfDetalles />,
+    async loader({ params }) {
+      let name = params.eventName;
+      return name;
+    },
   },
 ]);
 
 export default function App() {
   return <RouterProvider router={router} />;
 }
+
 function Root() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      navigate("/Eventos");
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+  }, [navigate]);
+
   return (
     <>
-      <Outlet />
+      <Loading />
     </>
   );
 }

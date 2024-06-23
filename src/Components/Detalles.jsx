@@ -1,54 +1,46 @@
 import Logo from "../assets/logoxd.png";
 import Maps from "../assets/logoxd.png";
 import { NavLink } from "react-router-dom";
-const Detalles = () => {
+import "leaflet/dist/leaflet.css";
+
+import { MapContainer, TileLayer, Marker, Popup, Circle } from "react-leaflet";
+const Detalles = ({ evento }) => {
   return (
     <>
       <section className="bg-ri-red h-screen">
-        <div className="flex flex-col items-center gap-y-8 py-8">
-          <figure className="flex items-center bg-white h-36 w-36 rounded-full">
-            <img src={Logo} alt="logo" />
-          </figure>
-          <h1 className="text-4xl font-bold text-ri-white drop-shadow-lg uppercase">
-            Conflictos Sociales
-          </h1>
-        </div>
-        <div className="gap-7 flex flex-col bg-ri-white rounded-t-[1.8rem] px-4 py-10">
+        <div className="flex flex-col items-center gap-y-24 py-24"></div>
+        <div className="gap-7 flex flex-col bg-ri-white rounded-t-[1.8rem] px-4 py-10 h-auto">
           <article className="space-y-3">
-            <h1 className="text-ri-blue font-bold text-xl">Descripción</h1>
-            <p className="text-ri-text">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad
-              voluptas asperiores repellendus atque, quod consectetur vel beatae
-              culpa dicta nihil?
-            </p>
+            <h1 className="text-ri-blue font-bold text-xl">Evento</h1>
+            <p className="text-ri-text">{evento && evento.description}</p>
           </article>
           <article className="space-y-3">
             <h1 className="text-ri-blue font-bold text-xl">Fecha y Hora</h1>
-            <p className="text-ri-text">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio,
-              quasi.
-            </p>
+            <p className="text-ri-text">{evento && evento.date}</p>
           </article>
           <article className="space-y-4">
             <h1 className="text-ri-blue font-bold text-xl">Recomendaciones</h1>
-            <p className="text-ri-text">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad
-              voluptas asperiores repellendus atque, quod consectetur vel beatae
-              culpa dicta nihil?
-            </p>
+            <p className="text-ri-text">{evento && evento.recomendaciones}</p>
           </article>
-          <article className="space-y-3">
+
+          {/* <article className="space-y-3">
             <h1 className="text-ri-blue font-bold text-xl">Lugar</h1>
             <figure className="h-16 w-full">
-              <img
-                src={Maps}
-                alt=""
-                className="h-16 rounded-lg w-full aspect-square"
-              />
+              <MapContainer
+                center={[-12.092918, -77.025284]}
+                zoom={17}
+                scrollWheelZoom={false}
+              >
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+              </MapContainer>
             </figure>
-          </article>
+          </article>*/}
+
           <NavLink to="/Eventos">
-            <button className="bg-ri-red text-ri-white font-bold py-4 rounded-2xl">
+            <button className="bg-ri-red text-ri-white font-bold py-4 rounded-2xl items-baseline content-end w-[calc(100%-32px)]">
               Volver
             </button>
           </NavLink>
