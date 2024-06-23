@@ -13,6 +13,14 @@ import EventosEspeciales from "../assets/IconsImages/EventosEspeciales.png";
 import MaterialesPeligrosos from "../assets/IconsImages/MaterialesPeligrosos.png";
 import Sismo from "../assets/IconsImages/Sismo.png";
 import { NavLink, useNavigate } from "react-router-dom";
+import useEventsStore from "../store/eventsData";
+
+const customIcon = new Icon({
+  // iconUrl: "https://cdn-icons-png.flaticon.com/512/447/447031.png",
+  iconUrl: "https://cdn-icons-png.flaticon.com/512/447/447031.png",
+  iconSize: [38, 38], // size of the icon
+});
+/* 
 
 const customAbulanciaIcon = new Icon({
   iconUrl: ambulanceIcon,
@@ -42,7 +50,8 @@ const customSismoIcon = new Icon({
   iconUrl: Sismo,
   iconSize: [38, 38], // size of the icon
 });
-
+*/
+/*
 let markers = [
   {
     geocode: [-12.092918, -77.025284],
@@ -62,7 +71,7 @@ let markers = [
     type: customSismoIcon,
     id: 3,
   },
-];
+];*/
 const createClusterCustomIcon = function (cluster) {
   return new divIcon({
     html: `<span class="cluster-icon">${cluster.getChildCount()}</span>`,
@@ -73,8 +82,11 @@ const createClusterCustomIcon = function (cluster) {
 
 const Map = ({ latitud, longitud, eventosMapa }) => {
   const position = [latitud, longitud];
+  const { events } = useEventsStore();
   const navigate = useNavigate();
-
+  useEffect(() => {
+    console.log(events, "eventos desde map");
+  }, [events]);
   return (
     <div className="flex h-4/6 w-screen self-center items-center mb-8">
       <MapContainer center={position} zoom={17} scrollWheelZoom={false}>
@@ -92,16 +104,16 @@ const Map = ({ latitud, longitud, eventosMapa }) => {
           iconCreateFunction={createClusterCustomIcon}
         >
           {/*{ lat: marker.latitud, lng: marker.longitud } */}
-          {eventosMapa &&
-            markers.map((marker) => (
+          {events &&
+            events.map((marker) => (
               <Marker
                 position={{ lat: marker.latitud, lng: marker.longitud }}
-                icon={marker.type}
+                icon={customIcon}
                 key={marker.latitud + marker.longitud}
               >
                 <NavLink to={`/Informe/${marker.id}`}>
                   <Popup>
-                    <a href="">Ver más</a>
+                    <a href={`/Informe/${marker.id}`}>Ver más</a>
                   </Popup>
                 </NavLink>
               </Marker>

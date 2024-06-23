@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import Notification from "./Notification";
+import dateFormater from "../utils/dateFormater";
 
 const ContainerNotification = ({flag, setFlag}) => {
   const [title, setTitle] = useState("Alerta RIMAC");
@@ -16,10 +17,7 @@ const ContainerNotification = ({flag, setFlag}) => {
       setFlag(!flag);
       setTitle(data?.evento?.tipo);
       setDescription(data?.evento?.gemini_output);
-
-      const diferenciaMilisegundos = new Date() - new Date(data.fecha);
-      const diferenciaMinutos = diferenciaMilisegundos / (1000 * 60);
-      setDate(diferenciaMinutos.toString());
+      setDate(dateFormater(data?.evento?.fecha));
       console.log(data);
 
       // Establecer un temporizador para ocultar la notificación después de 3 segundos

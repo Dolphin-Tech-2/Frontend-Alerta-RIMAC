@@ -13,6 +13,7 @@ import MapEvents from "./Components/MapEvents";
 import Loading from "./Components/Loading";
 import { useNavigate } from "react-router-dom";
 import ContainerNotification from "./Components/ContainerNotification";
+import useEventsStore from "./store/eventsData";
 
 const router = createBrowserRouter([
   {
@@ -32,14 +33,23 @@ const router = createBrowserRouter([
 
 export default function App() {
   const [flag, setFlag] = useState(false);
-  const [eventos, setEventos] = useState([]);
+  const { events, addEvent } = useEventsStore();
   useEffect(() => {
     console.log("flag", flag);
     const fetchData = async () => {
-      const result = await getById(1);
-      setEventos(result);
-      console.log(result);
+      if (events[0]!=undefined) {
+        const result = await getById(events[events.lenght - 1].id+1);
+        console.log(result);
+        addEvent(result);
+        console.log(events, "eventos");
+      } else {
+        const result = await getById(100);
+        console.log(result);
+        addEvent(result);
+        console.log(events, "eventos");
+      }
     };
+
     fetchData();
   }, [flag]);
   return (
